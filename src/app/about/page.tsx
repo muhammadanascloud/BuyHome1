@@ -56,6 +56,7 @@ const fadeInVariant = {
 };
 
 export default function AboutUs() {
+  const [isClient, setIsClient] = useState(false); // Track if the component is running on the client side
   const fullText = "Learn More About Our Vision";
   const typingSpeed = 25;
   const [typedText, setTypedText] = useState("");
@@ -83,6 +84,11 @@ export default function AboutUs() {
       }
     };
     typeText();
+  }, []);
+
+  // Detect client-side rendering to enable video playback
+  useEffect(() => {
+    setIsClient(true); // This ensures the video renders only on the client
   }, []);
 
   // Handle animations for elements coming into view
@@ -118,8 +124,8 @@ export default function AboutUs() {
       {/* Hero section with video */}
       <section className="relative flex items-center justify-center h-screen w-full text-center bg-black sm:h-3/4 md:h-screen">
         <div className="absolute inset-0">
-          {/* Ensure video only renders on the client side */}
-          {typeof window !== "undefined" && (
+          {/* Render video only on client-side */}
+          {isClient && (
             <video
               className="w-full h-full object-cover"
               src="/video/about-us-video/aboutus.mp4"

@@ -1,75 +1,48 @@
-'use client';
+"use client"; // Ensures this component only runs on the client-side
 
-import Link from 'next/link';
-import { useState, useEffect, useMemo } from 'react';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
+  const [isVisible, setIsVisible] = useState(true); // Control visibility of the navbar
   const pathname = usePathname();
 
-  // Ensure window is only accessed when on the client
+  // Handle scroll logic for hiding/showing the navbar without referencing "window"
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const handleScroll = () => {
-        if (window.innerWidth >= 768) {
-          if (window.scrollY > lastScrollY) {
-            setIsVisible(false);
-          } else {
-            setIsVisible(true);
-          }
-          setLastScrollY(window.scrollY);
-        }
-      };
+    let lastScrollY = 0; // Track the last scroll position locally within this effect
 
-      window.addEventListener('scroll', handleScroll);
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    }
-  }, [lastScrollY]);
-
-  // Ensure client-side rendering for mouse events
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const navbar = document.getElementById('navbar');
-      if (navbar) {
-        navbar.addEventListener('mouseenter', () => setIsVisible(true));
-        navbar.addEventListener('mouseleave', () => setIsVisible(false));
+    const handleScroll = () => {
+      const currentScrollY = document.documentElement.scrollTop; // Get current scroll position
+      if (currentScrollY > lastScrollY) {
+        setIsVisible(false); // Hide navbar when scrolling down
+      } else {
+        setIsVisible(true); // Show navbar when scrolling up
       }
+      lastScrollY = currentScrollY; // Update scroll position
+    };
 
-      return () => {
-        if (navbar) {
-          navbar.removeEventListener('mouseenter', () => setIsVisible(true));
-          navbar.removeEventListener('mouseleave', () => setIsVisible(false));
-        }
-      };
-    }
-  }, []);
+    const scrollListener = () => requestAnimationFrame(handleScroll);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    document.addEventListener("scroll", scrollListener);
 
-  const isActive = useMemo(
-    () => (path: string) => {
-      if (!isMounted) return '';
-      return pathname === path
-        ? 'bg-accent text-white px-4 py-2'
-        : 'text-white px-4 py-2 transition-colors hover:text-blue-300';
-    },
-    [isMounted, pathname]
-  );
+    return () => {
+      document.removeEventListener("scroll", scrollListener);
+    };
+  }, []); // No dependencies needed, local `lastScrollY` is used within the effect
+
+  // Determine if the current route is active for highlighting links
+  const isActive = (path: string) => {
+    return pathname === path
+      ? "bg-accent text-white px-4 py-2"
+      : "text-white px-4 py-2 transition-colors hover:text-blue-300";
+  };
 
   return (
     <nav
-      id="navbar"
       className={`fixed top-0 left-0 w-full z-50 bg-transparent text-white transition-transform duration-500 ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
+        isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,21 +53,23 @@ const Navbar = () => {
             </Link>
           </div>
 
+          {/* Desktop links */}
           <div className="hidden md:flex space-x-6">
-            <Link href="/" className={isActive('/')}>
+            <Link href="/" className={isActive("/")}>
               Home
             </Link>
-            <Link href="/about" className={isActive('/about')}>
+            <Link href="/about" className={isActive("/about")}>
               About
             </Link>
-            <Link href="/property-listings" className={isActive('/property-listings')}>
+            <Link href="/property-listings" className={isActive("/property-listings")}>
               Properties
             </Link>
-            <Link href="/contact" className={isActive('/contact')}>
+            <Link href="/contact" className={isActive("/contact")}>
               Contact
             </Link>
           </div>
 
+          {/* Mobile menu button */}
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -111,26 +86,27 @@ const Navbar = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
+                  d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
                 />
               </svg>
             </button>
           </div>
         </div>
 
+        {/* Mobile links */}
         {isOpen && (
           <div className="md:hidden">
             <div className="flex flex-col space-y-4 mt-4 bg-black p-4 rounded-lg">
-              <Link href="/" className={isActive('/')}>
+              <Link href="/" className={isActive("/")}>
                 Home
               </Link>
-              <Link href="/about" className={isActive('/about')}>
+              <Link href="/about" className={isActive("/about")}>
                 About
               </Link>
-              <Link href="/property-listings" className={isActive('/property-listings')}>
+              <Link href="/property-listings" className={isActive("/property-listings")}>
                 Properties
               </Link>
-              <Link href="/contact" className={isActive('/contact')}>
+              <Link href="/contact" className={isActive("/contact")}>
                 Contact
               </Link>
             </div>
