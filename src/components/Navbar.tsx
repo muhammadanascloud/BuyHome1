@@ -1,4 +1,4 @@
-'use client'; 
+'use client';
 
 import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
@@ -12,37 +12,43 @@ const Navbar = () => {
 
   const pathname = usePathname();
 
+  // Ensure window is only accessed when on the client
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerWidth >= 768) {
-        if (window.scrollY > lastScrollY) {
-          setIsVisible(false);
-        } else {
-          setIsVisible(true);
+    if (typeof window !== 'undefined') {
+      const handleScroll = () => {
+        if (window.innerWidth >= 768) {
+          if (window.scrollY > lastScrollY) {
+            setIsVisible(false);
+          } else {
+            setIsVisible(true);
+          }
+          setLastScrollY(window.scrollY);
         }
-        setLastScrollY(window.scrollY);
-      }
-    };
+      };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
   }, [lastScrollY]);
 
+  // Ensure client-side rendering for mouse events
   useEffect(() => {
-    const navbar = document.getElementById('navbar');
-    if (window.innerWidth >= 768 && navbar) {
-      navbar.addEventListener('mouseenter', () => setIsVisible(true));
-      navbar.addEventListener('mouseleave', () => setIsVisible(false));
-    }
-
-    return () => {
+    if (typeof window !== 'undefined') {
+      const navbar = document.getElementById('navbar');
       if (navbar) {
-        navbar.removeEventListener('mouseenter', () => setIsVisible(true));
-        navbar.removeEventListener('mouseleave', () => setIsVisible(false));
+        navbar.addEventListener('mouseenter', () => setIsVisible(true));
+        navbar.addEventListener('mouseleave', () => setIsVisible(false));
       }
-    };
+
+      return () => {
+        if (navbar) {
+          navbar.removeEventListener('mouseenter', () => setIsVisible(true));
+          navbar.removeEventListener('mouseleave', () => setIsVisible(false));
+        }
+      };
+    }
   }, []);
 
   useEffect(() => {
