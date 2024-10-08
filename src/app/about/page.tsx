@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Ensures this component only runs on the client side
 
 import { useState, useEffect, useRef } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
@@ -72,6 +72,7 @@ export default function AboutUs() {
   const isReviewsInView = useInView(reviewsRef, { once: false });
   const isMapInView = useInView(mapRef, { once: false });
 
+  // Typing effect for the hero section
   useEffect(() => {
     let currentIndex = 0;
     const typeText = () => {
@@ -84,6 +85,7 @@ export default function AboutUs() {
     typeText();
   }, []);
 
+  // Handle animations for elements coming into view
   useEffect(() => {
     if (isMissionVisionInView) {
       missionVisionControls.start("visible");
@@ -113,15 +115,19 @@ export default function AboutUs() {
 
   return (
     <>
+      {/* Hero section with video */}
       <section className="relative flex items-center justify-center h-screen w-full text-center bg-black sm:h-3/4 md:h-screen">
         <div className="absolute inset-0">
-          <video
-            className="w-full h-full object-cover"
-            src="/video/about-us-video/aboutus.mp4"
-            autoPlay
-            loop
-            muted
-          />
+          {/* Ensure video only renders on the client side */}
+          {typeof window !== "undefined" && (
+            <video
+              className="w-full h-full object-cover"
+              src="/video/about-us-video/aboutus.mp4"
+              autoPlay
+              loop
+              muted
+            />
+          )}
           <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
 
@@ -142,6 +148,7 @@ export default function AboutUs() {
         </div>
       </section>
 
+      {/* Mission and Vision section */}
       <motion.section
         ref={missionVisionRef}
         className="py-20 px-6 bg-black text-center text-white"
@@ -167,7 +174,6 @@ export default function AboutUs() {
             initial="hidden"
             animate={missionVisionControls}
             transition={{ duration: 0.8, delay: 0.2 }}
-            data-aos="fade-in"
           >
             <div className="flex justify-center mb-6">
               <Home size={48} color="#38bdf8" />
@@ -195,7 +201,6 @@ export default function AboutUs() {
             initial="hidden"
             animate={missionVisionControls}
             transition={{ duration: 0.8, delay: 0.4 }}
-            data-aos="fade-in"
           >
             <div className="flex justify-center mb-6">
               <Eye size={48} color="#38bdf8" />
@@ -216,6 +221,7 @@ export default function AboutUs() {
         </div>
       </motion.section>
 
+      {/* Client Reviews section */}
       <motion.section
         ref={reviewsRef}
         className="py-6 px-6 mb-16 bg-black text-center"
@@ -287,6 +293,7 @@ export default function AboutUs() {
         </div>
       </motion.section>
 
+      {/* Locations section */}
       <motion.section
         ref={mapRef}
         className="w-full py-16 px-6 bg-black text-center text-white"
