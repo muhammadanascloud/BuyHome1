@@ -1,23 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+@import 'leaflet/dist/leaflet.css';
+
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --foreground-rgb: 236, 240, 241; 
+  --background-start-rgb: 0, 0, 0; 
+  --background-end-rgb: 43, 43, 43; 
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
   }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 @layer utilities {
@@ -25,3 +25,39 @@ body {
     text-wrap: balance;
   }
 }
+
+button {
+  background-color: var(--highlight);
+  color: var(--foreground-rgb);
+  transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: var(--highlightHover);
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@layer utilities {
+  .animate-scroll {
+    animation: scroll 60s linear infinite; 
+  }
+}
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
+html, body {
+  @apply bg-black text-white;
+  height: 100%; 
+}
+
