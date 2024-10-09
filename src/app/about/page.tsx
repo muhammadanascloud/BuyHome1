@@ -4,12 +4,32 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import Image from "next/image";
 import { Home, Eye, Quote } from "lucide-react";
-import dynamic from "next/dynamic"; // for dynamically loading MapWithMarkers
+import dynamic from "next/dynamic";
 
 // Dynamically import the MapWithMarkers component
 const MapWithMarkers = dynamic(() => import("@/components/MapWithMarkers"), {
-  ssr: false, // ensures it only renders on the client side
+  ssr: false,
 });
+
+const VideoComponent = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null;
+
+  return (
+    <video
+      className="w-full h-full object-cover"
+      src="/video/about-us-video/aboutus.mp4"
+      autoPlay
+      loop
+      muted
+    />
+  );
+};
 
 type Review = {
   name: string;
@@ -77,7 +97,6 @@ export default function AboutUs() {
   const isReviewsInView = useInView(reviewsRef, { once: false });
   const isMapInView = useInView(mapRef, { once: false });
 
-  // Typing effect for the hero section
   useEffect(() => {
     let currentIndex = 0;
     const typeText = () => {
@@ -90,7 +109,6 @@ export default function AboutUs() {
     typeText();
   }, []);
 
-  // Handle animations for elements coming into view
   useEffect(() => {
     if (isMissionVisionInView) {
       missionVisionControls.start("visible");
@@ -123,28 +141,18 @@ export default function AboutUs() {
       {/* Hero section with video */}
       <section className="relative flex items-center justify-center h-screen w-full text-center bg-black sm:h-3/4 md:h-screen">
         <div className="absolute inset-0">
-          {/* Ensure video only renders on the client side */}
-          {typeof document !== "undefined" && (
-            <video
-              className="w-full h-full object-cover"
-              src="/video/about-us-video/aboutus.mp4"
-              autoPlay
-              loop
-              muted
-            />
-          )}
+          <VideoComponent />
           <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
 
         <div className="relative z-10 text-white px-6 max-w-4xl">
-          <h1 className="text-6xl md:text-6xl font-heading mb-6">
-            {typedText.slice(0, 10)} <br className="block sm:hidden" />
-            {typedText.slice(10, 21)}
-            {typedText.length >= 21 && (
-              <span className="font-bold bg-gradient-to-r from-accent to-highlight text-white px-2 py-1 ml-2 inline-block">
-                {typedText.slice(21)}
-              </span>
-            )}
+          <h1 className="text-[10vw] sm:text-6xl md:text-7xl font-heading mb-6 leading-tight sm:leading-none">
+            {typedText.slice(0, 10)} {/* Correctly captures "Learn More" */}
+            <span className="font-bold bg-gradient-to-r from-accent to-highlight text-transparent bg-clip-text">
+              About
+            </span>{" "}
+            {typedText.slice(16)}{" "}
+            {/* Correctly starts slicing from "Our Vision" */}
           </h1>
           <p className="text-lg md:text-2xl text-white mb-8">
             Discover the story behind BuyHome and how we’re dedicated to helping
@@ -156,13 +164,13 @@ export default function AboutUs() {
       {/* Mission and Vision section */}
       <motion.section
         ref={missionVisionRef}
-        className="py-20 px-6 bg-black text-center text-white"
+        className="py-10 sm:py-16 px-6 bg-black text-center text-white"
         variants={fadeInUpVariant}
         initial="hidden"
         animate={missionVisionControls}
         transition={{ duration: 0.8 }}
       >
-        <h2 className="text-4xl md:text-5xl font-bold mb-12">
+        <h2 className="text-4xl md:text-5xl font-bold mb-8 sm:mb-12">
           Our{" "}
           <span className="font-extrabold bg-gradient-to-r from-accent to-highlight text-transparent bg-clip-text">
             Mission
@@ -172,15 +180,15 @@ export default function AboutUs() {
             Vision
           </span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-16 max-w-5xl mx-auto">
           <motion.div
-            className="bg-gray-900 p-8 rounded-lg shadow-lg transition-transform transform hover:scale-105"
+            className="bg-gray-900 p-6 sm:p-8 rounded-lg shadow-lg transition-transform transform hover:scale-105"
             variants={fadeInUpVariant}
             initial="hidden"
             animate={missionVisionControls}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-4 sm:mb-6">
               <Home size={48} color="#38bdf8" />
             </div>
             <h3 className="text-2xl md:text-3xl font-semibold mb-4">
@@ -201,13 +209,13 @@ export default function AboutUs() {
           </motion.div>
 
           <motion.div
-            className="bg-gray-900 p-8 rounded-lg shadow-lg transition-transform transform hover:scale-105"
+            className="bg-gray-900 p-6 sm:p-8 rounded-lg shadow-lg transition-transform transform hover:scale-105"
             variants={fadeInUpVariant}
             initial="hidden"
             animate={missionVisionControls}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-4 sm:mb-6">
               <Eye size={48} color="#38bdf8" />
             </div>
             <h3 className="text-2xl md:text-3xl font-semibold mb-4 bg-gradient-to-r from-accent to-highlight text-transparent bg-clip-text">
@@ -229,7 +237,7 @@ export default function AboutUs() {
       {/* Client Reviews section */}
       <motion.section
         ref={reviewsRef}
-        className="py-6 px-6 mb-16 bg-black text-center"
+        className="py-6 sm:py-12 px-6 mb-12 bg-black text-center"
         variants={fadeInUpVariant}
         initial="hidden"
         animate={reviewsControls}
@@ -241,7 +249,7 @@ export default function AboutUs() {
           animate={reviewsControls}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-20 mt-2">
+          <h2 className="text-4xl md:text-5xl font-bold mb-12 sm:mb-16 mt-0">
             <span className="text-white">Client </span>
             <span className="font-extrabold bg-gradient-to-r from-accent to-highlight text-transparent bg-clip-text">
               Reviews
@@ -301,13 +309,13 @@ export default function AboutUs() {
       {/* Locations section */}
       <motion.section
         ref={mapRef}
-        className="w-full py-16 px-6 bg-black text-center text-white"
+        className="w-full py-6 sm:py-10 px-6 bg-black text-center text-white"
         variants={fadeInUpVariant}
         initial="hidden"
         animate={mapControls}
         transition={{ duration: 0.8 }}
       >
-        <h2 className="text-4xl md:text-5xl font-bold mb-12">
+        <h2 className="text-4xl md:text-5xl font-bold mb-8">
           <span className="text-white">Our </span>
           <span className="font-extrabold bg-gradient-to-r from-accent to-highlight text-transparent bg-clip-text">
             Locations

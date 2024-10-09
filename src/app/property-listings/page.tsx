@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import properties from "@/data/properties";
 import Link from "next/link";
 import Image from "next/image";
@@ -10,11 +10,6 @@ type ListingType = "All" | "For Sale" | "For Rent";
 type PropertyType = "All" | "Apartment" | "House" | "Villa" | "Commercial";
 
 export default function PropertyListings() {
-
-  const [text, setText] = useState("");
-  const fullText = "Your Dream Home is just a Search away";
-  const typingSpeed = 40;
-
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedListingType, setSelectedListingType] =
     useState<ListingType>("All");
@@ -27,47 +22,6 @@ export default function PropertyListings() {
   const [currentPage, setCurrentPage] = useState(1);
   const propertiesPerPage = 6;
   const [errorMessage, setErrorMessage] = useState<string>("");
-
-  // Typing effect logic to simulate Hero section animation
-  useEffect(() => {
-    let currentIndex = 0;
-
-    const typeText = () => {
-      if (currentIndex < fullText.length) {
-        setText(fullText.slice(0, currentIndex + 1));
-        currentIndex++;
-        setTimeout(typeText, typingSpeed);
-      }
-    };
-
-    typeText();
-  }, []);
-
-  const highlightText = (typedText: string): JSX.Element => {
-    const words: string[] = typedText.split(" ");
-
-    return (
-      <span>
-        {words.map((word: string, index: number) => {
-          if (word === "Home" || word === "Search") {
-            return (
-              <span
-                key={index}
-                className="inline-block font-bold bg-gradient-to-r from-accent to-highlight text-white px-2 py-1 mx-1"
-              >
-                {word}
-              </span>
-            );
-          }
-          return (
-            <span key={index} className="mx-1">
-              {word}
-            </span>
-          );
-        })}
-      </span>
-    );
-  };
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -135,7 +89,7 @@ export default function PropertyListings() {
           onClick={() => paginate(i)}
           className={`px-3 py-2 rounded-lg ${
             currentPage === i
-              ? "bg-accent text-heading"
+              ? "bg-accent text-white" // Updated to make the text white for the active page
               : "bg-background text-text"
           } hover:bg-highlight transition-colors`}
         >
@@ -159,7 +113,7 @@ export default function PropertyListings() {
           onClick={() => paginate(totalPages)}
           className={`px-3 py-2 rounded-lg ${
             currentPage === totalPages
-              ? "bg-accent text-heading"
+              ? "bg-accent text-white" // Updated for totalPages if active
               : "bg-background text-text"
           } hover:bg-highlight transition-colors`}
         >
@@ -173,21 +127,8 @@ export default function PropertyListings() {
 
   return (
     <div className="min-h-screen bg-black text-white font-body">
-      <section className="pt-16 pb-2 sm:pb-4 text-center">
-        <div className="max-w-7xl mx-auto">
-          <h1
-            className={`
-        text-3xl sm:text-4xl md:text-5xl 
-        sm:leading-snug md:leading-tight 
-        mb-6 md:mb-4 lg:mb-2 font-heading text-white
-      `}
-          >
-            {highlightText(text)}
-          </h1>
-        </div>
-      </section>
-
-      <section className="pt-8 sm:pt-12 pb-6 md:pb-8 px-6">
+      {/* Adjusted spacing after removing the heading */}
+      <section className="pt-20 sm:pt-24 pb-6 md:pb-8 px-6">
         <div className="max-w-7xl mx-auto">
           <form
             className="flex flex-col md:flex-row flex-wrap items-center gap-4 mb-6"
@@ -224,7 +165,7 @@ export default function PropertyListings() {
                   }
                   className="w-full px-4 py-2 border rounded-none text-black outline-none bg-white"
                 >
-                  <option value="All">All Types</option>
+                  <option value="All Types">All Types</option>
                   <option value="Apartment">Apartment</option>
                   <option value="House">House</option>
                   <option value="Villa">Villa</option>
