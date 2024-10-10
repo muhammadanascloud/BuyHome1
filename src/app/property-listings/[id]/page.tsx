@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 import PropertySlider from '@/components/PropertySlider';
 import properties from '@/data/properties';
 import { Home, Info, Car } from 'lucide-react';
@@ -13,7 +11,7 @@ export default async function PropertyDetails({ params }: { params: { id: string
     return notFound();
   }
 
-  const imageFiles = await getPropertyImages(propertyId);
+  const imageFiles = foundProperty.images;
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -96,26 +94,16 @@ export default async function PropertyDetails({ params }: { params: { id: string
         <div className="p-6 bg-gray-900 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold mb-4 text-blue-400">Property Description</h2>
           <ul className="list-disc list-inside space-y-3 text-lg text-gray-300">
-            {foundProperty.description.map((point, index) => (
-              <li key={index}>{point}</li>
-            ))}
+            {foundProperty.description ? (
+              foundProperty.description.map((point, index) => (
+                <li key={index}>{point}</li>
+              ))
+            ) : (
+              <li>No description available</li>
+            )}
           </ul>
         </div>
       </section>
     </div>
   );
-}
-
-async function getPropertyImages(propertyId: number) {
-  const imageDir = path.join(process.cwd(), 'public', 'images', 'properties', `property ${propertyId}`);
-  let imageFiles: string[] = [];
-
-  try {
-    const files = fs.readdirSync(imageDir);
-    imageFiles = files.map((file) => `/images/properties/property ${propertyId}/${file}`);
-  } catch (error) {
-    console.error('Error reading image files:', error);
-  }
-
-  return imageFiles;
 }

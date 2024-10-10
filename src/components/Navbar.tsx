@@ -1,4 +1,4 @@
-"use client"; // Ensures this component only runs on the client-side
+"use client"; 
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -6,21 +6,20 @@ import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(true); // Control visibility of the navbar
+  const [isVisible, setIsVisible] = useState(true);
   const pathname = usePathname();
 
-  // Handle scroll logic for hiding/showing the navbar without referencing "window"
   useEffect(() => {
-    let lastScrollY = 0; // Track the last scroll position locally within this effect
+    let lastScrollY = 0; 
 
     const handleScroll = () => {
-      const currentScrollY = document.documentElement.scrollTop; // Get current scroll position
+      const currentScrollY = document.documentElement.scrollTop; 
       if (currentScrollY > lastScrollY) {
-        setIsVisible(false); // Hide navbar when scrolling down
+        setIsVisible(false); 
       } else {
-        setIsVisible(true); // Show navbar when scrolling up
+        setIsVisible(true); 
       }
-      lastScrollY = currentScrollY; // Update scroll position
+      lastScrollY = currentScrollY; 
     };
 
     const scrollListener = () => requestAnimationFrame(handleScroll);
@@ -30,9 +29,8 @@ const Navbar = () => {
     return () => {
       document.removeEventListener("scroll", scrollListener);
     };
-  }, []); // No dependencies needed, local `lastScrollY` is used within the effect
+  }, []); 
 
-  // Determine if the current route is active for highlighting links
   const isActive = (path: string) => {
     return pathname === path
       ? "bg-accent text-white px-4 py-2"
@@ -48,7 +46,6 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            {/* Updated logo with font-weight and gradient on "Home" */}
             <Link href="/" className="text-2xl font-bold text-white">
               Buy
               <span className="bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">
@@ -57,7 +54,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop links */}
           <div className="hidden md:flex space-x-6">
             <Link href="/" className={isActive("/")}>
               Home
@@ -73,7 +69,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -97,7 +92,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile links */}
         {isOpen && (
           <div className="md:hidden">
             <div className="flex flex-col space-y-4 mt-4 bg-black p-4 rounded-lg">

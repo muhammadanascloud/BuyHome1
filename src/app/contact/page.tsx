@@ -9,7 +9,6 @@ export default function ContactPage() {
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  // Email validation regex
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -18,7 +17,6 @@ export default function ContactPage() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Check if any field is empty or email is invalid
     if (!name || !email || !message) {
       setErrorMessage("Please fill out all fields.");
       setSuccessMessage("");
@@ -31,7 +29,6 @@ export default function ContactPage() {
       return;
     }
 
-    // If validation passes, send the form (you can add your API call here)
     setSuccessMessage("Your message has been sent!");
     setErrorMessage("");
     setName("");
@@ -46,12 +43,10 @@ export default function ContactPage() {
           <span className="text-white">Contact</span> <span className="text-blue-500">Us</span>
         </h1>
 
-        {/* Display success or error messages */}
         {successMessage && <p className="text-center text-green-500 mb-4">{successMessage}</p>}
         {errorMessage && <p className="text-center text-red-500 mb-4">{errorMessage}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name input field */}
           <div>
             <label className="block text-text mb-2">Your Name</label>
             <input
@@ -65,7 +60,6 @@ export default function ContactPage() {
             />
           </div>
 
-          {/* Email input field */}
           <div>
             <label className="block text-text mb-2">Your Email</label>
             <input
@@ -79,7 +73,6 @@ export default function ContactPage() {
             />
           </div>
 
-          {/* Message input field */}
           <div>
             <label className="block text-text mb-2">Your Message</label>
             <textarea
@@ -93,7 +86,6 @@ export default function ContactPage() {
             />
           </div>
 
-          {/* Submit button */}
           <div>
             <button
               type="submit"

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import properties from "@/data/properties";
 import Link from "next/link";
-import Image from "next/image";
 import { Property } from "@/data/properties";
+import PropertyImage from '@/components/PropertyImage'; // Updated component name
 
 type ListingType = "All" | "For Sale" | "For Rent";
 type PropertyType = "All" | "Apartment" | "House" | "Villa" | "Commercial";
@@ -89,7 +89,7 @@ export default function PropertyListings() {
           onClick={() => paginate(i)}
           className={`px-3 py-2 rounded-lg ${
             currentPage === i
-              ? "bg-accent text-white" // Updated to make the text white for the active page
+              ? "bg-accent text-white"
               : "bg-background text-text"
           } hover:bg-highlight transition-colors`}
         >
@@ -113,7 +113,7 @@ export default function PropertyListings() {
           onClick={() => paginate(totalPages)}
           className={`px-3 py-2 rounded-lg ${
             currentPage === totalPages
-              ? "bg-accent text-white" // Updated for totalPages if active
+              ? "bg-accent text-white"
               : "bg-background text-text"
           } hover:bg-highlight transition-colors`}
         >
@@ -127,7 +127,6 @@ export default function PropertyListings() {
 
   return (
     <div className="min-h-screen bg-black text-white font-body">
-      {/* Adjusted spacing after removing the heading */}
       <section className="pt-20 sm:pt-24 pb-6 md:pb-8 px-6">
         <div className="max-w-7xl mx-auto">
           <form
@@ -208,7 +207,7 @@ export default function PropertyListings() {
                   key={property.id}
                   className="bg-gray-900 rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-transform"
                 >
-                  <Image
+                  <PropertyImage
                     src={property.imageUrl}
                     alt={property.title}
                     width={400}

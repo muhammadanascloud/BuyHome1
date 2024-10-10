@@ -6,7 +6,6 @@ import Image from "next/image";
 import { Home, Eye, Quote } from "lucide-react";
 import dynamic from "next/dynamic";
 
-// Dynamically import the MapWithMarkers component
 const MapWithMarkers = dynamic(() => import("@/components/MapWithMarkers"), {
   ssr: false,
 });
@@ -138,7 +137,6 @@ export default function AboutUs() {
 
   return (
     <>
-      {/* Hero section with video */}
       <section className="relative flex items-center justify-center h-screen w-full text-center bg-black sm:h-3/4 md:h-screen">
         <div className="absolute inset-0">
           <VideoComponent />
@@ -147,12 +145,11 @@ export default function AboutUs() {
 
         <div className="relative z-10 text-white px-6 max-w-4xl">
           <h1 className="text-[10vw] sm:text-6xl md:text-7xl font-heading mb-6 leading-tight sm:leading-none">
-            {typedText.slice(0, 10)} {/* Correctly captures "Learn More" */}
+            {typedText.slice(0, 10)}
             <span className="font-bold bg-gradient-to-r from-accent to-highlight text-transparent bg-clip-text">
               About
             </span>{" "}
             {typedText.slice(16)}{" "}
-            {/* Correctly starts slicing from "Our Vision" */}
           </h1>
           <p className="text-lg md:text-2xl text-white mb-8">
             Discover the story behind BuyHome and how we’re dedicated to helping
@@ -161,7 +158,6 @@ export default function AboutUs() {
         </div>
       </section>
 
-      {/* Mission and Vision section */}
       <motion.section
         ref={missionVisionRef}
         className="py-10 sm:py-16 px-6 bg-black text-center text-white"
@@ -234,7 +230,6 @@ export default function AboutUs() {
         </div>
       </motion.section>
 
-      {/* Client Reviews section */}
       <motion.section
         ref={reviewsRef}
         className="py-6 sm:py-12 px-6 mb-12 bg-black text-center"
@@ -306,7 +301,6 @@ export default function AboutUs() {
         </div>
       </motion.section>
 
-      {/* Locations section */}
       <motion.section
         ref={mapRef}
         className="w-full py-6 sm:py-10 px-6 bg-black text-center text-white"

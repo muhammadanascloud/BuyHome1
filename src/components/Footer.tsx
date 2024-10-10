@@ -1,6 +1,6 @@
 import React from "react";
-import { FaFacebook, FaLinkedin } from "react-icons/fa"; // Keep other icons
-import Image from 'next/image'; // Import Next.js Image component for optimized image handling
+import { FaFacebook, FaLinkedin } from "react-icons/fa"; 
+import Image from 'next/image'; 
 import Link from 'next/link';
 
 export default function Footer() {
@@ -46,7 +46,6 @@ export default function Footer() {
                 <FaFacebook size={24} />
               </Link>
 
-              {/* Use the downloaded Twitter icon */}
               <Link href="#" aria-label="X (Twitter)" className="hover:text-e67e22 transition duration-200 focus:outline-none focus:ring-2 focus:ring-e67e22">
                 <Image
                   src="/images/x-icon.png"
