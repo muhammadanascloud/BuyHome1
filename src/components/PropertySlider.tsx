@@ -33,8 +33,7 @@ export default function PropertySlider({ images }: PropertySliderProps) {
               src={imageFile}
               alt={`Property image ${idx + 1}`}
               fill
-              sizes="100vw"
-              className="object-cover"
+              className="object-cover" // Using fill here, so removed width/height
             />
           </div>
         ))}
