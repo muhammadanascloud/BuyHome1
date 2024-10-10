@@ -18,7 +18,7 @@ export default function PropertySlider({ images }: PropertySliderProps) {
     slidesToScroll: 1,
     autoplay: false,
     autoplaySpeed: 3000,
-    pauseOnHover: true, // Pauses on hover for better UX
+    pauseOnHover: true,  
     arrows: true,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
@@ -34,7 +34,7 @@ export default function PropertySlider({ images }: PropertySliderProps) {
               alt={`Property image ${idx + 1}`}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Ensuring responsive image loading
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"  
             />
           </div>
         ))}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import properties from "@/data/properties";
 import Link from "next/link";
 import { Property } from "@/data/properties";
-import PropertyImage from '@/components/PropertyImage'; // Updated component name
+import PropertyImage from '@/components/PropertyImage';  
 
 type ListingType = "All" | "For Sale" | "For Rent";
 type PropertyType = "All" | "Apartment" | "House" | "Villa" | "Commercial";

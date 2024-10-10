@@ -1,12 +1,12 @@
 import Image from "next/image";
 
 interface PropertyImageProps {
-  src: string;        // The source URL of the image
-  alt: string;        // Alt text for the image
-  width?: number;     // Optional width of the image
-  height?: number;    // Optional height of the image
-  fill?: boolean;     // Optional boolean to decide if the image should fill its container
-  className?: string; // Optional class name for styling
+  src: string;        
+  alt: string;        
+  width?: number;      
+  height?: number;    
+  fill?: boolean;     
+  className?: string; 
 }
 
 export default function PropertyImage({
