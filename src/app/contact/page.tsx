@@ -8,13 +8,14 @@ export default function ContactPage() {
   const [message, setMessage] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!name || !email || !message) {
@@ -29,11 +30,40 @@ export default function ContactPage() {
       return;
     }
 
-    setSuccessMessage("Your message has been sent!");
+    setIsSubmitting(true);
     setErrorMessage("");
-    setName("");
-    setEmail("");
-    setMessage("");
+    setSuccessMessage("");
+
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("message", message);
+
+      const response = await fetch("https://formspree.io/f/xlderjbe", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (response.ok) {
+        setSuccessMessage("Your message has been sent!");
+        setErrorMessage("");
+        setName("");
+        setEmail("");
+        setMessage("");
+      } else {
+        setErrorMessage("Oops! Something went wrong. Please try again.");
+        setSuccessMessage("");
+      }
+    } catch {
+      setErrorMessage("There was a problem sending your message. Please try again.");
+      setSuccessMessage("");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -54,9 +84,7 @@ export default function ContactPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name"
-              className={`w-full px-4 py-2 rounded-lg border ${
-                !name && errorMessage ? "border-red-500" : ""
-              } text-black outline-none focus:ring-2 focus:ring-accent`}
+              className={`w-full px-4 py-2 rounded-lg border ${!name && errorMessage ? "border-red-500" : ""} text-black outline-none focus:ring-2 focus:ring-accent`}
             />
           </div>
 
@@ -67,9 +95,7 @@ export default function ContactPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className={`w-full px-4 py-2 rounded-lg border ${
-                (!isValidEmail(email) && errorMessage) ? "border-red-500" : ""
-              } text-black outline-none focus:ring-2 focus:ring-accent`}
+              className={`w-full px-4 py-2 rounded-lg border ${!isValidEmail(email) && errorMessage ? "border-red-500" : ""} text-black outline-none focus:ring-2 focus:ring-accent`}
             />
           </div>
 
@@ -80,18 +106,19 @@ export default function ContactPage() {
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Enter your message"
               rows={5}
-              className={`w-full px-4 py-2 rounded-lg border ${
-                !message && errorMessage ? "border-red-500" : ""
-              } text-black outline-none focus:ring-2 focus:ring-accent`}
+              className={`w-full px-4 py-2 rounded-lg border ${!message && errorMessage ? "border-red-500" : ""} text-black outline-none focus:ring-2 focus:ring-accent`}
             />
           </div>
 
           <div>
             <button
               type="submit"
-              className="bg-gradient-to-r from-blue-400 to-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:from-blue-300 hover:to-blue-500 transition-all duration-300 w-full"
+              disabled={isSubmitting}
+              className={`bg-gradient-to-r from-blue-400 to-blue-600 text-white py-3 px-6 rounded-lg font-bold w-full transition-all duration-300 ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:from-blue-300 hover:to-blue-500"
+              }`}
             >
-              Send Message
+              {isSubmitting ? "Sending..." : "Send Message"}
             </button>
           </div>
         </form>
