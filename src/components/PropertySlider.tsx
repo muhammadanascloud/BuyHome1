@@ -18,7 +18,7 @@ export default function PropertySlider({ images }: PropertySliderProps) {
     slidesToScroll: 1,
     autoplay: false,
     autoplaySpeed: 3000,
-    pauseOnHover: false,
+    pauseOnHover: true, // Pauses on hover for better UX
     arrows: true,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
@@ -33,7 +33,8 @@ export default function PropertySlider({ images }: PropertySliderProps) {
               src={imageFile}
               alt={`Property image ${idx + 1}`}
               fill
-              className="object-cover" // Using fill here, so removed width/height
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Ensuring responsive image loading
             />
           </div>
         ))}
@@ -46,8 +47,7 @@ function PrevArrow(props: CustomArrowProps) {
   const { className, onClick } = props;
   return (
     <div
-      className={`${className} absolute z-10 top-[50%] left-2 text-white bg-gray-800 p-2 rounded-full hover:bg-gray-600 cursor-pointer flex justify-center items-center`}
-      style={{ transform: "translateY(-50%)" }}
+      className={`${className} absolute z-10 top-1/2 left-2 transform -translate-y-1/2 text-white bg-gray-800 p-2 rounded-full hover:bg-gray-600 cursor-pointer`}
       onClick={onClick}
     >
       ⬅️
@@ -59,8 +59,7 @@ function NextArrow(props: CustomArrowProps) {
   const { className, onClick } = props;
   return (
     <div
-      className={`${className} absolute z-10 top-[50%] right-2 text-white bg-gray-800 p-2 rounded-full hover:bg-gray-600 cursor-pointer flex justify-center items-center`}
-      style={{ transform: "translateY(-50%)" }}
+      className={`${className} absolute z-10 top-1/2 right-2 transform -translate-y-1/2 text-white bg-gray-800 p-2 rounded-full hover:bg-gray-600 cursor-pointer`}
       onClick={onClick}
     >
       ➡️
