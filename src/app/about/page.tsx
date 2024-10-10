@@ -145,11 +145,11 @@ export default function AboutUs() {
 
         <div className="relative z-10 text-white px-6 max-w-4xl">
           <h1 className="text-[10vw] sm:text-6xl md:text-7xl font-heading mb-6 leading-tight sm:leading-none">
-            {typedText.slice(0, 10)}
+            {typedText.slice(0, 10)}&nbsp;
             <span className="font-bold bg-gradient-to-r from-accent to-highlight text-transparent bg-clip-text">
               About
             </span>{" "}
-            {typedText.slice(16)}{" "}
+            {typedText.slice(16)}
           </h1>
           <p className="text-lg md:text-2xl text-white mb-8">
             Discover the story behind BuyHome and how we’re dedicated to helping
@@ -188,9 +188,8 @@ export default function AboutUs() {
               <Home size={48} color="#38bdf8" />
             </div>
             <h3 className="text-2xl md:text-3xl font-semibold mb-4">
-              <span className="text-white">Our </span>
               <span className="bg-gradient-to-r from-accent to-highlight text-transparent bg-clip-text">
-                Mission
+                Our Mission
               </span>
             </h3>
             <p className="text-base md:text-lg text-gray-400 mb-4">
